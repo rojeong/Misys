@@ -58,7 +58,7 @@ class CTetris(Tetris):
             print()
         print()
 
-    # fixBlock 수정: 블록 고정시 타입정보 저장
+    # 블록 고정시 타입정보 저장
     def fixBlock(self):
         for y in range(self.currBlk.get_dy()):
             for x in range(self.currBlk.get_dx()):
@@ -127,7 +127,7 @@ if __name__ == "__main__":
     for n in '0123456':
         board.setOperation(n, TetrisState.NewBlock, myOnNewBlock, TetrisState.Running, myOnFinished, TetrisState.Finished)
 
-    # 게임 실행 흐름 동일
+    # 게임 실행 흐름 tetris_plugin 코드와 동일
     import random
     randomgen = random.Random()
     board.state = TetrisState.NewBlock
