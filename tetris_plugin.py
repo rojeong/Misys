@@ -7,24 +7,10 @@ from matrix import Matrix
 
 # 변경된 회전 알고리즘
 def rotate_cw(arr):
-    n = len(arr) # 행의 개수 
-    m = len(arr[0]) # 열의 개수
-    # m x n 배열로 새로 만듦 (원본이 n x m이면)
-    new_arr = [[0] * n for _ in range(m)]
-    for i in range(n):       
-        for j in range(m):  
-            new_arr[j][n - 1 - i] = arr[i][j]
-    return new_arr
-
+    return [list(row)[::-1] for row in zip(*arr)]
 
 def rotate_ccw(arr):
-    n = len(arr) # 행의 개수 
-    m = len(arr[0]) # 열의 개수
-    new_arr = [[0] * n for _ in range(m)]
-    for i in range(n):      
-        for j in range(m):   
-            new_arr[m - 1 - j][i] = arr[i][j]
-    return new_arr
+    return [list(row) for row in zip(*arr)][::-1]
 
 class TetrisState(Enum):
     Running = 0
@@ -234,21 +220,6 @@ class Tetris:
         print()
     
     # 충돌 검사 함수
-    # def anyConflict(self, top, left, currBlk):
-    #     # 바운더리 체크(게임판 범위 벗어나면 무조건 충돌)
-    #     if top < 0 or left < 0 or \
-    #         (top + currBlk.get_dy()) > self.iScreen.get_dy() or \
-    #         (left + currBlk.get_dx()) > self.iScreen.get_dx():
-    #             return True
-    #     temp = self.iScreen.clip(top, left, top + currBlk.get_dy(), left + currBlk.get_dx())
-    #     temp = temp + currBlk
-    #     arr = temp.get_array()
-    #     for y in range(temp.get_dy()):
-    #         for x in range(temp.get_dx()):
-    #             if arr[y][x] > 1:
-    #                 return True
-    #     return False
-
     def anyConflict(self, top, left, currBlk):
         temp = self.iScreen.clip(top, left, top + currBlk.get_dy(), left + currBlk.get_dx())
         temp = temp + currBlk
@@ -259,20 +230,6 @@ class Tetris:
                     # 바닥/벽/블록 구분 없이 무조건 1(True) 반환
                     return True
         return False
-
-
-    # def deleteFullLines(self):
-    #     array = self.iScreen.get_array()
-    #     dy, dx, dw = self._iScreenDy, self._iScreenDx, self.iScreenDw
-    #     full_lines = []
-    #     for y in range(dy):
-    #         if all(array[y][dw:dw+dx]):
-    #             full_lines.append(y)
-    #     for y in reversed(full_lines):
-    #         del array[y]
-    #         array.insert(0, [1]*dw + [0]*dx + [1]*dw)
-    #     self.iScreen = Matrix(array)
-    #     self.oScreen = Matrix(array)
 
     def deleteFullLines(self):
         array = self.iScreen.get_array()
